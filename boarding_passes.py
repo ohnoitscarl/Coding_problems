@@ -821,14 +821,12 @@ test_passes = [
 ]
 def find_max_id(list):
     max_id = 0
-
+    b_pass_ids = []
     for b_pass in list:
         max_row = 127
         min_row = 0
         max_col = 7
         min_col = 0
-
-        print(b_pass)
 
         for i in b_pass[:-3]:
             if i == "B":
@@ -836,7 +834,7 @@ def find_max_id(list):
 
             else:
                 max_row = (max_row+min_row) // 2
-        print("The row is "  + str(max_row))
+        #print("The row is "  + str(max_row))
 
         for i in b_pass[-3:]:
             if i == "R":
@@ -844,11 +842,27 @@ def find_max_id(list):
 
             else:
                 max_col = (max_col + min_col) // 2
-        print("The column is "  + str(max_col))
+        #print("The column is "  + str(max_col))
 
         b_pass_id = max_row * 8 + max_col
-        print("The boarding pass ID is: " + str(b_pass_id))
+        b_pass_ids.append(b_pass_id)
+        #print("The boarding pass ID is: " + str(b_pass_id))
         max_id = max(max_id, b_pass_id)
-    return max_id
+    return max_id, b_pass_ids
 
-print(find_max_id(b_passes))
+def all_theoretical_IDs():
+    theoretical_ids = []
+    for i in range(1, 127):
+        for j in range(0, 8):
+            theoretical_ids.append(i*8+j)
+    return theoretical_ids
+
+max_id, b_pass_ids = find_max_id(b_passes)
+theoretical_ids = all_theoretical_IDs()
+print(b_pass_ids)
+overlap = [ID for ID in theoretical_ids if ID not in b_pass_ids]
+
+my_ID = [ID for ID in overlap if 96 < ID < 911]
+print(my_ID)
+
+
